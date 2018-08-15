@@ -1,7 +1,7 @@
 package com.pmd.floogle.network;
 
 
-import com.pmd.floogle.models.Photos;
+import com.pmd.floogle.models.RequestResult;
 
 import io.reactivex.Observable;
 import okhttp3.Interceptor;
@@ -37,8 +37,6 @@ public class MainService {
     }
 
     public MainService() {
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApiConfig.API_BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -50,11 +48,11 @@ public class MainService {
     }
 
     private interface NetworkService {
-        @GET("services/rest/?method=flickr.photos.search&api_key=1508443e49213ff84d566777dc211f2a&per_page=25&format=json")
-        Observable<Photos> getPhotosBySearchTags(@Query("tags") String searchTags, @Query("page") String page);
+        @GET("services/rest/?method=flickr.photos.search&api_key=1508443e49213ff84d566777dc211f2a&per_page=25&format=json&nojsoncallback=1")
+        Observable<RequestResult> getPhotosBySearchTags(@Query("tags") String searchTags, @Query("page") String page);
     }
 
-    public Observable<Photos> getPhotosBySearchTags(String searchTags, String page) {
+    public Observable<RequestResult> getPhotosBySearchTags(String searchTags, String page) {
         return networkService.getPhotosBySearchTags(searchTags, page);
     }
 

@@ -8,14 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="text">
         <item name="android:layout_width">wrap_content</item>
@@ -25,10 +19,10 @@
 
     <style name="card">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">240dp</item>
+        <item name="android:layout_margin">@dimen/padding_medium</item>
         <item name="android:clickable">true</item>
         <item name="android:foreground">@drawable/card_selector</item>
-        <item name="android:background">@android:color/white</item>
     </style>
 
 </resources>

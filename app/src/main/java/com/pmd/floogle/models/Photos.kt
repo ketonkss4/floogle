@@ -5,11 +5,17 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
 class Photos(val page: String,
-             val photos: List<Photo>)
+             val photo: List<Photo>)
 
 class Photo(val id: String,
-            val title: String)
+            val title: String,
+            val secret: String,
+            val server: String,
+            val farm: String
+            )
 
-fun requestPhotos(searchTags:String, page: String) : Observable<Photos> {
+class RequestResult(val photos: Photos?)
+
+fun requestPhotos(searchTags:String, page: String) : Observable<RequestResult> {
     return MainService().getPhotosBySearchTags(searchTags, page).subscribeOn(Schedulers.io())
 }
