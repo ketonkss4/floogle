@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.pmd.floogle.presenters.SearchViewPresenter;
 
+/**
+ * Main activity search view where user can complete the initial search
+ */
 public class SearchActivity extends AppCompatActivity implements SearchViewPresenter.OnSearchActionListener {
     public static final String SEARCH_TEXT = "SEARCH_TEXT";
 

@@ -2,7 +2,6 @@ package com.pmd.floogle;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -41,6 +40,9 @@ public class PhotoResultsViewActivity extends AppCompatActivity implements Searc
 
     }
 
+    /**
+     * Loads PhotoListFragment to display list of photos based on search text
+     */
     private void loadResultsFragment() {
         Bundle bundle = new Bundle();
         bundle.putString(SEARCH_TEXT, getIntent().getStringExtra(SEARCH_TEXT));
@@ -65,11 +67,20 @@ public class PhotoResultsViewActivity extends AppCompatActivity implements Searc
         }
     }
 
+    /**
+     * Invoked when new search is made via the search box view
+     * in the PhotoResultsViewActivity
+     * @param searchText the target search text
+     */
     @Override
     public void onSearchRequested(String searchText) {
-        photoListViewPresenter.requestPhotos(searchText);
+        photoListViewPresenter.requestNewPhotoSearch(searchText);
     }
 
+    /**
+     * Invoked when user selects on item in the photo list grid
+     * @param photoUrl
+     */
     @Override
     public void displayFullPhotoViewer(String photoUrl) {
         ImageView photoImageView = findViewById(R.id.imageView);

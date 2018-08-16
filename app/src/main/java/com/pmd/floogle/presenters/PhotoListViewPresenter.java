@@ -13,30 +13,56 @@ import io.reactivex.disposables.Disposable;
 
 public class PhotoListViewPresenter {
 
+    private static final int INITIAL_PAGE = 1;
     private PhotoRequestListener listener;
     private PhotoViewerController photoViewerController;
+    private String currentSearchText;
+    private Disposable subscription;
+    private int currentPage = 1;
 
     public interface PhotoRequestListener {
+
         void onPhotoRequestComplete(List<Photo> photo);
+
         void onEmptyPhotoResponse();
+
+        void onNextPage(List<Photo> photo);
     }
 
     public interface PhotoViewerController {
+
         void displayFullPhotoViewer(String photoUrl);
     }
+
     public PhotoListViewPresenter(PhotoRequestListener listener, PhotoViewerController photoViewerController) {
         this.listener = listener;
         this.photoViewerController = photoViewerController;
     }
 
-    public void requestPhotos(String searchText) {
-        Observable<RequestResult> photosObservable = PhotosKt.requestPhotos(searchText, "1");
-        Disposable subscription = photosObservable.observeOn(AndroidSchedulers.mainThread())
+    public void requestNextPage() {
+        if (currentSearchText != null && !currentSearchText.isEmpty()) {
+            requestPhotoSearchByPage(currentSearchText, ++currentPage);
+        }
+    }
+
+    public void requestNewPhotoSearch(String searchText) {
+        currentSearchText = searchText;
+        requestPhotoSearchByPage(searchText, INITIAL_PAGE);
+    }
+
+    private void requestPhotoSearchByPage(String searchText, int page) {
+        currentPage = page;
+        Observable<RequestResult> photosObservable = PhotosKt.requestPhotos(searchText, String.valueOf(page));
+        subscription = photosObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             Photos photos = result.getPhotos();
                             if (photos != null) {
-                                listener.onPhotoRequestComplete(photos.getPhoto());
-                            }else {
+                                if(page==INITIAL_PAGE) {
+                                    listener.onPhotoRequestComplete(photos.getPhoto());
+                                }else {
+                                    listener.onNextPage(photos.getPhoto());
+                                }
+                            } else {
                                 listener.onEmptyPhotoResponse();
                             }
                         }
@@ -45,6 +71,10 @@ public class PhotoListViewPresenter {
 
     public void displayFullPhotoViewer(String photoUrl) {
         photoViewerController.displayFullPhotoViewer(photoUrl);
+    }
+
+    public void cleanUpSubscriptions() {
+        subscription.dispose();
     }
 
 }

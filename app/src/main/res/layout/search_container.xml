@@ -26,7 +26,7 @@
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:background="@drawable/search_bg"
-        android:hint="Search something..."
+        android:hint="@string/search_something"
         android:textSize="14sp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"

@@ -22,15 +22,12 @@ import java.util.List;
 public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.ViewHolder> {
 
     private List<Photo> photos = new ArrayList<>();
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }
     private OnPhotoSelectedListener listener;
 
     public interface OnPhotoSelectedListener{
+
         void onPhotoSelected(String photoUrl);
     }
-
     public PhotoGridAdapter(OnPhotoSelectedListener listener) {
         this.listener = listener;
     }
@@ -63,6 +60,14 @@ public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.View
                     photo.getSecret())));
         }
 
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
+    }
+
+    public void addPhotos(List<Photo> photos){
+        this.photos.addAll(photos);
     }
 
     private void loadPhotoIntoView(Context context, ImageView imageView, String photoUrl) {
