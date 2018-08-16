@@ -75,6 +75,12 @@ public class SearchViewPresenter {
         searchActionListener.onSearchRequested(searchText.trim());
     }
 
+    /**
+     * Create new list of suggestions into single string with the added new search
+     * if search is not a duplicate
+     * @param searchText user search text
+     * @return list of past searches in single string
+     */
     private String createNewSuggestionList(String searchText) {
         StringBuilder suggestionStringListBuilder = new StringBuilder();
         Boolean isDuplicate = false;

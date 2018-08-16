@@ -34,22 +34,37 @@ public class PhotoListViewPresenter {
         void displayFullPhotoViewer(String photoUrl);
     }
 
-    public PhotoListViewPresenter(PhotoRequestListener listener, PhotoViewerController photoViewerController) {
-        this.listener = listener;
+    public PhotoListViewPresenter(PhotoViewerController photoViewerController) {
         this.photoViewerController = photoViewerController;
     }
 
+    public void setListener(PhotoRequestListener listener) {
+        this.listener = listener;
+    }
+
+    /**
+     * Request next page of current search
+     */
     public void requestNextPage() {
         if (currentSearchText != null && !currentSearchText.isEmpty()) {
             requestPhotoSearchByPage(currentSearchText, ++currentPage);
         }
     }
 
+    /**
+     * Request new search on first page
+     * @param searchText user search text
+     */
     public void requestNewPhotoSearch(String searchText) {
         currentSearchText = searchText;
         requestPhotoSearchByPage(searchText, INITIAL_PAGE);
     }
 
+    /**
+     * Asynchronously Request a photo search based on user search text and target page
+     * @param searchText user search text
+     * @param page targeted page
+     */
     private void requestPhotoSearchByPage(String searchText, int page) {
         currentPage = page;
         Observable<RequestResult> photosObservable = PhotosKt.requestPhotos(searchText, String.valueOf(page));
@@ -57,9 +72,9 @@ public class PhotoListViewPresenter {
                 .subscribe(result -> {
                             Photos photos = result.getPhotos();
                             if (photos != null) {
-                                if(page==INITIAL_PAGE) {
+                                if (page == INITIAL_PAGE) {
                                     listener.onPhotoRequestComplete(photos.getPhoto());
-                                }else {
+                                } else {
                                     listener.onNextPage(photos.getPhoto());
                                 }
                             } else {
@@ -74,7 +89,7 @@ public class PhotoListViewPresenter {
     }
 
     public void cleanUpSubscriptions() {
-        subscription.dispose();
+        if (subscription != null) subscription.dispose();
     }
 
 }

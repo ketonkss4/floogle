@@ -27,11 +27,11 @@ public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.View
     public interface OnPhotoSelectedListener{
 
         void onPhotoSelected(String photoUrl);
+
     }
     public PhotoGridAdapter(OnPhotoSelectedListener listener) {
         this.listener = listener;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +43,7 @@ public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Photo photo = photos.get(position);
 
-        //Render image using Picasso library
+        //Render image using Picasso library and set click listener on view
         if (!TextUtils.isEmpty(photo.getId())) {
             loadPhotoIntoView(holder.itemView.getContext(),
                     holder.photo,
@@ -68,6 +68,10 @@ public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.View
 
     public void addPhotos(List<Photo> photos){
         this.photos.addAll(photos);
+    }
+
+    public List<Photo> getList() {
+        return photos;
     }
 
     private void loadPhotoIntoView(Context context, ImageView imageView, String photoUrl) {
